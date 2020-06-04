@@ -1,5 +1,6 @@
 package guru.sfg.beer.order.service.services.model;
 
+import javassist.NotFoundException;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -26,6 +27,9 @@ public class BeerServiceServiceImpl implements BeerServiceService {
 
     @Override
     public BeerDto getInfoById(UUID id) {
-        return template.getForObject(beerServiceHost + SERVICE_PATH + id.toString(), BeerDto.class);
+        var object =  template.getForObject(beerServiceHost + SERVICE_PATH + id.toString(), BeerDto.class);
+        if(object == null)
+            throw new RuntimeException();
+        else return object;
     }
 }
